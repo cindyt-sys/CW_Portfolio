@@ -55,6 +55,31 @@
                 <div class="divider"></div>
             </div>
 
+            <!-- Illustration -->
+            <div id="illustration" class="portfolio-category">
+                <h3>Illustration</h3>
+                <p class="category-desc">Digital illustrations created for ARTS 265, exploring editorial storytelling and expressive portraiture.</p>
+                <div class="grid illustration-grid">
+                    <div class="card reveal interactive-card illustration-card" role="button" tabindex="0" data-images='["Illustration/Weng_Cindy_EditorialKids.jpg"]' data-title="Children's Editorial Illustration" data-program="ARTS 265 · Illustration" data-description="A science-themed editorial illustration for children, featuring a robotic dinosaur, a rocket, and glowing scientific symbols against a colorful galaxy." title="View full illustration">
+                        <div class="card-image">
+                            <img src="Illustration/Weng_Cindy_EditorialKids.jpg" width="3000" height="2400" loading="lazy" alt="Red and white robotic dinosaur with a rocket, DNA helix, atom, and glowing green flask against a colorful galaxy.">
+                        </div>
+                        <div class="card-content">
+                            <h4>Children's Editorial Illustration</h4>
+                            <p>A playful exploration of science and imagination through a robotic dinosaur and a vibrant cosmic setting.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal interactive-card illustration-card" role="button" tabindex="0" data-images='["Illustration/Weng_Cindy_Taylor_Swift_Final.jpg"]' data-title="Taylor Swift Portrait" data-program="ARTS 265 · Illustration" data-description="A stylized portrait of Taylor Swift singing into a microphone, surrounded by colorful butterflies and soft, luminous color." title="View full illustration">
+                        <div class="card-image">
+                            <img src="Illustration/Weng_Cindy_Taylor_Swift_Final.jpg" width="1650" height="2400" loading="lazy" alt="Stylized Taylor Swift singing into a microphone, with blonde hair, a pink top, and colorful butterflies.">
+                        </div>
+                        <div class="card-content">
+                            <h4>Taylor Swift Portrait</h4>
+                            <p>An expressive performance portrait with luminous colors and fluttering butterflies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- 3D Modeling & Environments -->
             <div class="portfolio-category">
                 <h3>3D Modeling & Environments</h3>
@@ -275,6 +300,19 @@
                         openModal(images, title, program, description, videoSrc);
                     }
                 });
+            });
+
+            document.querySelectorAll('.illustration-card').forEach(card => {
+                card.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        card.click();
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && modal.style.display === 'flex') closeBtn.click();
             });
 
             function openModal(images, title, program, description, videoSrc) {

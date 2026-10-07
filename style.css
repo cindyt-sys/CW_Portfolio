@@ -681,3 +681,32 @@ footer {
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+/* Preserve each illustration's full composition. */
+.illustration-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.illustration-card .card-image {
+    aspect-ratio: 4 / 3;
+    background: var(--bg-surface-hover);
+}
+
+.illustration-card .card-image img {
+    object-fit: contain;
+}
+
+.illustration-card:hover .card-image img {
+    transform: none;
+}
+
+.illustration-card:focus-visible {
+    outline: 3px solid var(--accent-primary);
+    outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+    .illustration-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
