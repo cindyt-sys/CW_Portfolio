@@ -103,13 +103,13 @@
                             <p>A joyful character portrait with flowing hair, expressive posing, and a soft pink palette.</p>
                         </div>
                     </div>
-                    <div class="card reveal interactive-card illustration-card" role="button" tabindex="0" data-images='["Personal/Stretch.jpg"]' data-title="Stretch" data-program="Personal Project · Digital Art" data-description="A character with teal-to-blue hair stretching by the ocean. Created using an illustration of a girl with black-and-blue hair as a reference." title="View full illustration">
+                    <div class="card reveal interactive-card illustration-card" role="button" tabindex="0" data-images='["Personal/Stretch.jpg", "Personal/Stretch-reference.png"]' data-image-labels='["My artwork — Stretch", "Reference image — used for this study; not my artwork"]' data-title="Stretch" data-program="Personal Project · Digital Art" data-description="A character with teal-to-blue hair stretching by the ocean. Created using an illustration of a girl with black-and-blue hair as a reference. Open the gallery to see my artwork and the reference image." title="View full illustration">
                         <div class="card-image">
                             <img src="Personal/Stretch.jpg" width="3200" height="4800" loading="lazy" alt="Girl with long teal-to-blue hair and purple eyes stretching her arms overhead by a sunny ocean.">
                         </div>
                         <div class="card-content">
                             <h4>Stretch</h4>
-                            <p>A character study with flowing hair and a bright seaside setting. Created using an illustration of a girl with black-and-blue hair as a reference.</p>
+                            <p>A character study with flowing hair and a bright seaside setting. Created using an illustration of a girl with black-and-blue hair as a reference. Open the gallery to see my artwork and the reference image.</p>
                         </div>
                     </div>
                 </div>
@@ -302,6 +302,7 @@
                     <img class="modal-content" id="modalMainImage" src="" alt="Expanded View" style="display:none;">
                     <video class="modal-content" id="modalMainVideo" controls style="display:none;"></video>
                     <iframe class="modal-content" id="modalYoutube" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="display:none; border:none; width: 100%; aspect-ratio: 16/9;"></iframe>
+                    <p id="modalImageCaption" style="display:none; margin-top:1rem; text-align:center;"></p>
                     <div id="modalThumbnails" class="modal-thumbnails"></div>
                 </div>
                 <div class="modal-info-section">
@@ -331,7 +332,8 @@
                     const description = this.getAttribute('data-description');
                     
                     if ((images && images.length > 0) || videoSrc) {
-                        openModal(images, title, program, description, videoSrc);
+                        const imageLabels = JSON.parse(this.getAttribute("data-image-labels") || "[]");
+                        openModal(images, title, program, description, videoSrc, imageLabels);
                     }
                 });
             });
@@ -349,7 +351,9 @@
                 if (event.key === 'Escape' && modal.style.display === 'flex') closeBtn.click();
             });
 
-            function openModal(images, title, program, description, videoSrc) {
+            function openModal(images, title, program, description, videoSrc, imageLabels = []) {
+                const imageCaption = document.getElementById("modalImageCaption");
+                imageCaption.style.display = "none";
                 modal.style.display = "flex";
                 
                 document.getElementById('modalTitle').textContent = title;
@@ -382,15 +386,22 @@
                     modalImg.style.display = "block";
                     thumbnailContainer.style.display = "flex";
                     modalImg.src = images[0]; // Set main image to the first one
+                    modalImg.alt = imageLabels[0] || title;
+                    imageCaption.textContent = imageLabels[0] || "";
+                    imageCaption.style.display = imageLabels.length ? "block" : "none";
                     thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
 
                     // Generate thumbnails
                     images.forEach((imgSrc, index) => {
                         const thumb = document.createElement('img');
                         thumb.src = imgSrc;
+                        thumb.alt = imageLabels[index] || title + " — image " + (index + 1);
+                        thumb.title = thumb.alt;
                         thumb.className = 'thumbnail' + (index === 0 ? ' active' : '');
                         thumb.addEventListener('click', () => {
                             modalImg.src = imgSrc;
+                            modalImg.alt = imageLabels[index] || title;
+                            imageCaption.textContent = imageLabels[index] || "";
                             // Update active state
                             document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
                             thumb.classList.add('active');
